@@ -1,0 +1,41 @@
+syntax = "proto3";
+package trconfpb;
+option go_package = "github.com/DontBeProud/go-treasure/pb/tr-conf-pb;trconfpb";
+
+// 根命名规则
+message ShardingRootConfig {
+  string constPrefix = 1;  // 固定前缀
+  string constSuffix = 2;  // 固定后缀
+}
+
+// 时间分割(分库/分表)策略的分割级别
+enum ShardingTimeLevel {
+  Disabled  = 0; // 不使用基于时间分割的规则
+  Hour      = 1; // 小时
+  HalfDay   = 2; // 半天(每12个小时分割一次)
+  Day       = 3; // 天
+  Week      = 4; // 周(每周一为分割日)
+  HalfMonth = 5; // 半月(每个月的1号和16号位分割月)
+  Month     = 6; // 月
+  TwoMonth  = 7; // 2月
+  Quarter   = 8; // 季度
+  HalfYear  = 9; // 半年
+  Year      = 10;// 年
+}
+
+// 时间分割(分库/分表)策略配置的proto
+message ShardingWithTimeConfig {
+  ShardingTimeLevel timeLevel             = 1; // 时间分割级别
+  string            splitCharacter        = 2; // 分割字符
+  string            timeSplitCharacter    = 3; // 各时间成员之间的分割字符
+  uint64            earliestValidTime     = 4; // 最早的有效时间(分库分表的业务场景一般需要设置一个最早有效时间, 否则在查询等场景中可能出现表未创建的情况)
+  bool              prefixMode            = 5; // 时间信息是否置于命名前缀(默认位false，即采用raw - date的格式)
+}
+
+// ShardingWithGroupConfig 基于分组的分割规则配置
+message ShardingWithGroupConfig {
+  uint64            groupSize             = 1; // 分组数量(实际使用的过程中，建议使用2的N次方)
+  string            splitCharacter        = 2; // 分割字符 raw + SplitCharacter + group
+  bool              prefixMode            = 3; // 分组信息是否置于命名前缀(默认位false，即采用raw - group的格式)
+  bool              indexIncreaseFromZero = 4; // 分组序号是否从0增长. true: 0.1.2.3....  false: 1.2.3.4....
+}

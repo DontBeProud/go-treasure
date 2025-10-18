@@ -1,4 +1,4 @@
-package trlog
+package gtlog
 
 import (
 	kratosLog "github.com/go-kratos/kratos/v2/log"

@@ -1,6 +1,6 @@
 syntax = "proto3";
-package trconfpb;
-option go_package = "github.com/DontBeProud/go-treasure/pb/tr-conf-pb;trconfpb";
+package gtconfpb;
+option go_package = "github.com/DontBeProud/go-treasure/pb/gt-conf-pb;gtconfpb";
 
 // 根命名规则
 message ShardingRootConfig {

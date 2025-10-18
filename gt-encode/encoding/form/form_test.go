@@ -1,7 +1,7 @@
 package form
 
 import (
-	"github.com/DontBeProud/go-treasure/tr-encode/encoding"
+	"github.com/DontBeProud/go-treasure/gt-encode/encoding"
 	"reflect"
 	"testing"
 )

@@ -1,8 +1,8 @@
-package trsharding
+package gtsharding
 
 import (
-	trconfpb "github.com/DontBeProud/go-treasure/pb/tr-conf-pb"
-	gscron "github.com/DontBeProud/go-treasure/tr-cron"
+	gscron "github.com/DontBeProud/go-treasure/gt-cron"
+	trconfpb "github.com/DontBeProud/go-treasure/pb/gt-conf-pb"
 	"time"
 )
 

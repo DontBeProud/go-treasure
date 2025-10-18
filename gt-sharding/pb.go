@@ -1,12 +1,12 @@
-package trsharding
+package gtsharding
 
 import (
-	trconfpb "github.com/DontBeProud/go-treasure/pb/tr-conf-pb"
+	gtconfpb "github.com/DontBeProud/go-treasure/pb/gt-conf-pb"
 	"time"
 )
 
 // NewRootRuleWithPb 基于pb创建根命名规则
-func NewRootRuleWithPb(cfg *trconfpb.ShardingRootConfig) RootRule {
+func NewRootRuleWithPb(cfg *gtconfpb.ShardingRootConfig) RootRule {
 	if cfg == nil {
 		return &rootRule{}
 	}
@@ -17,16 +17,16 @@ func NewRootRuleWithPb(cfg *trconfpb.ShardingRootConfig) RootRule {
 }
 
 // GenerateSubShardingRuleWithTimeWithPb 生成基于时间的子分割规则(通过pb)
-func (r *rootRule) GenerateSubShardingRuleWithTimeWithPb(cfg *trconfpb.ShardingWithTimeConfig) (SubRuleWithTime, error) {
+func (r *rootRule) GenerateSubShardingRuleWithTimeWithPb(cfg *gtconfpb.ShardingWithTimeConfig) (SubRuleWithTime, error) {
 	return r.GenerateSubShardingRuleWithTime(ParsesShardingWithTimeConfigPb(cfg))
 }
 
 // GenerateSubShardingRuleWithGroupWithPb 生成基于分组的子分割规则(通过pb)
-func (r *rootRule) GenerateSubShardingRuleWithGroupWithPb(cfg *trconfpb.ShardingWithGroupConfig) (SubRuleWithGroup, error) {
+func (r *rootRule) GenerateSubShardingRuleWithGroupWithPb(cfg *gtconfpb.ShardingWithGroupConfig) (SubRuleWithGroup, error) {
 	return r.GenerateSubShardingRuleWithGroup(ParseRuleWithGroupConfigWithPb(cfg))
 }
 
-func ParseRuleWithGroupConfigWithPb(cfg *trconfpb.ShardingWithGroupConfig) *RuleWithGroupConfig {
+func ParseRuleWithGroupConfigWithPb(cfg *gtconfpb.ShardingWithGroupConfig) *RuleWithGroupConfig {
 	if cfg == nil {
 		return nil
 	}
@@ -40,7 +40,7 @@ func ParseRuleWithGroupConfigWithPb(cfg *trconfpb.ShardingWithGroupConfig) *Rule
 }
 
 // ParsesShardingWithTimeConfigPb 解析ShardingWithTimeConfigPb
-func ParsesShardingWithTimeConfigPb(cfg *trconfpb.ShardingWithTimeConfig) *RuleWithTimeConfig {
+func ParsesShardingWithTimeConfigPb(cfg *gtconfpb.ShardingWithTimeConfig) *RuleWithTimeConfig {
 	if cfg == nil {
 		return nil
 	}

@@ -1,4 +1,4 @@
-package trencode
+package gtencode
 
 import (
 	"testing"

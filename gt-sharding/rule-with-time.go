@@ -1,8 +1,8 @@
-package trsharding
+package gtsharding
 
 import (
 	"fmt"
-	gscron "github.com/DontBeProud/go-treasure/tr-cron"
+	gscron "github.com/DontBeProud/go-treasure/gt-cron"
 	"time"
 )
 

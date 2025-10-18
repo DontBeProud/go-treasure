@@ -1,4 +1,4 @@
-package trsharding
+package gtsharding
 
 import (
 	"errors"

@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.36.10
 // 	protoc        v4.25.1
-// source: tr-conf-pb/tr-sharding.proto
+// source: gt-conf-pb/gt-sharding.proto
 
-package trconfpb
+package gtconfpb
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -79,11 +79,11 @@ func (x ShardingTimeLevel) String() string {
 }
 
 func (ShardingTimeLevel) Descriptor() protoreflect.EnumDescriptor {
-	return file_tr_conf_pb_tr_sharding_proto_enumTypes[0].Descriptor()
+	return file_gt_conf_pb_gt_sharding_proto_enumTypes[0].Descriptor()
 }
 
 func (ShardingTimeLevel) Type() protoreflect.EnumType {
-	return &file_tr_conf_pb_tr_sharding_proto_enumTypes[0]
+	return &file_gt_conf_pb_gt_sharding_proto_enumTypes[0]
 }
 
 func (x ShardingTimeLevel) Number() protoreflect.EnumNumber {
@@ -92,7 +92,7 @@ func (x ShardingTimeLevel) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ShardingTimeLevel.Descriptor instead.
 func (ShardingTimeLevel) EnumDescriptor() ([]byte, []int) {
-	return file_tr_conf_pb_tr_sharding_proto_rawDescGZIP(), []int{0}
+	return file_gt_conf_pb_gt_sharding_proto_rawDescGZIP(), []int{0}
 }
 
 // 根命名规则
@@ -106,7 +106,7 @@ type ShardingRootConfig struct {
 
 func (x *ShardingRootConfig) Reset() {
 	*x = ShardingRootConfig{}
-	mi := &file_tr_conf_pb_tr_sharding_proto_msgTypes[0]
+	mi := &file_gt_conf_pb_gt_sharding_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -118,7 +118,7 @@ func (x *ShardingRootConfig) String() string {
 func (*ShardingRootConfig) ProtoMessage() {}
 
 func (x *ShardingRootConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_tr_conf_pb_tr_sharding_proto_msgTypes[0]
+	mi := &file_gt_conf_pb_gt_sharding_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -131,7 +131,7 @@ func (x *ShardingRootConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ShardingRootConfig.ProtoReflect.Descriptor instead.
 func (*ShardingRootConfig) Descriptor() ([]byte, []int) {
-	return file_tr_conf_pb_tr_sharding_proto_rawDescGZIP(), []int{0}
+	return file_gt_conf_pb_gt_sharding_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *ShardingRootConfig) GetConstPrefix() string {
@@ -151,7 +151,7 @@ func (x *ShardingRootConfig) GetConstSuffix() string {
 // 时间分割(分库/分表)策略配置的proto
 type ShardingWithTimeConfig struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
-	TimeLevel          ShardingTimeLevel      `protobuf:"varint,1,opt,name=timeLevel,proto3,enum=trconfpb.ShardingTimeLevel" json:"timeLevel,omitempty"` // 时间分割级别
+	TimeLevel          ShardingTimeLevel      `protobuf:"varint,1,opt,name=timeLevel,proto3,enum=gtconfpb.ShardingTimeLevel" json:"timeLevel,omitempty"` // 时间分割级别
 	SplitCharacter     string                 `protobuf:"bytes,2,opt,name=splitCharacter,proto3" json:"splitCharacter,omitempty"`                        // 分割字符
 	TimeSplitCharacter string                 `protobuf:"bytes,3,opt,name=timeSplitCharacter,proto3" json:"timeSplitCharacter,omitempty"`                // 各时间成员之间的分割字符
 	EarliestValidTime  uint64                 `protobuf:"varint,4,opt,name=earliestValidTime,proto3" json:"earliestValidTime,omitempty"`                 // 最早的有效时间(分库分表的业务场景一般需要设置一个最早有效时间, 否则在查询等场景中可能出现表未创建的情况)
@@ -162,7 +162,7 @@ type ShardingWithTimeConfig struct {
 
 func (x *ShardingWithTimeConfig) Reset() {
 	*x = ShardingWithTimeConfig{}
-	mi := &file_tr_conf_pb_tr_sharding_proto_msgTypes[1]
+	mi := &file_gt_conf_pb_gt_sharding_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -174,7 +174,7 @@ func (x *ShardingWithTimeConfig) String() string {
 func (*ShardingWithTimeConfig) ProtoMessage() {}
 
 func (x *ShardingWithTimeConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_tr_conf_pb_tr_sharding_proto_msgTypes[1]
+	mi := &file_gt_conf_pb_gt_sharding_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -187,7 +187,7 @@ func (x *ShardingWithTimeConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ShardingWithTimeConfig.ProtoReflect.Descriptor instead.
 func (*ShardingWithTimeConfig) Descriptor() ([]byte, []int) {
-	return file_tr_conf_pb_tr_sharding_proto_rawDescGZIP(), []int{1}
+	return file_gt_conf_pb_gt_sharding_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *ShardingWithTimeConfig) GetTimeLevel() ShardingTimeLevel {
@@ -238,7 +238,7 @@ type ShardingWithGroupConfig struct {
 
 func (x *ShardingWithGroupConfig) Reset() {
 	*x = ShardingWithGroupConfig{}
-	mi := &file_tr_conf_pb_tr_sharding_proto_msgTypes[2]
+	mi := &file_gt_conf_pb_gt_sharding_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -250,7 +250,7 @@ func (x *ShardingWithGroupConfig) String() string {
 func (*ShardingWithGroupConfig) ProtoMessage() {}
 
 func (x *ShardingWithGroupConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_tr_conf_pb_tr_sharding_proto_msgTypes[2]
+	mi := &file_gt_conf_pb_gt_sharding_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -263,7 +263,7 @@ func (x *ShardingWithGroupConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ShardingWithGroupConfig.ProtoReflect.Descriptor instead.
 func (*ShardingWithGroupConfig) Descriptor() ([]byte, []int) {
-	return file_tr_conf_pb_tr_sharding_proto_rawDescGZIP(), []int{2}
+	return file_gt_conf_pb_gt_sharding_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ShardingWithGroupConfig) GetGroupSize() uint64 {
@@ -294,16 +294,16 @@ func (x *ShardingWithGroupConfig) GetIndexIncreaseFromZero() bool {
 	return false
 }
 
-var File_tr_conf_pb_tr_sharding_proto protoreflect.FileDescriptor
+var File_gt_conf_pb_gt_sharding_proto protoreflect.FileDescriptor
 
-const file_tr_conf_pb_tr_sharding_proto_rawDesc = "" +
+const file_gt_conf_pb_gt_sharding_proto_rawDesc = "" +
 	"\n" +
-	"\x1ctr-conf-pb/tr-sharding.proto\x12\btrconfpb\"X\n" +
+	"\x1cgt-conf-pb/gt-sharding.proto\x12\bgtconfpb\"X\n" +
 	"\x12ShardingRootConfig\x12 \n" +
 	"\vconstPrefix\x18\x01 \x01(\tR\vconstPrefix\x12 \n" +
 	"\vconstSuffix\x18\x02 \x01(\tR\vconstSuffix\"\xf9\x01\n" +
 	"\x16ShardingWithTimeConfig\x129\n" +
-	"\ttimeLevel\x18\x01 \x01(\x0e2\x1b.trconfpb.ShardingTimeLevelR\ttimeLevel\x12&\n" +
+	"\ttimeLevel\x18\x01 \x01(\x0e2\x1b.gtconfpb.ShardingTimeLevelR\ttimeLevel\x12&\n" +
 	"\x0esplitCharacter\x18\x02 \x01(\tR\x0esplitCharacter\x12.\n" +
 	"\x12timeSplitCharacter\x18\x03 \x01(\tR\x12timeSplitCharacter\x12,\n" +
 	"\x11earliestValidTime\x18\x04 \x01(\x04R\x11earliestValidTime\x12\x1e\n" +
@@ -329,30 +329,30 @@ const file_tr_conf_pb_tr_sharding_proto_rawDesc = "" +
 	"\aQuarter\x10\b\x12\f\n" +
 	"\bHalfYear\x10\t\x12\b\n" +
 	"\x04Year\x10\n" +
-	"B;Z9github.com/DontBeProud/go-treasure/pb/tr-conf-pb;trconfpbb\x06proto3"
+	"B;Z9github.com/DontBeProud/go-treasure/pb/gt-conf-pb;gtconfpbb\x06proto3"
 
 var (
-	file_tr_conf_pb_tr_sharding_proto_rawDescOnce sync.Once
-	file_tr_conf_pb_tr_sharding_proto_rawDescData []byte
+	file_gt_conf_pb_gt_sharding_proto_rawDescOnce sync.Once
+	file_gt_conf_pb_gt_sharding_proto_rawDescData []byte
 )
 
-func file_tr_conf_pb_tr_sharding_proto_rawDescGZIP() []byte {
-	file_tr_conf_pb_tr_sharding_proto_rawDescOnce.Do(func() {
-		file_tr_conf_pb_tr_sharding_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_tr_conf_pb_tr_sharding_proto_rawDesc), len(file_tr_conf_pb_tr_sharding_proto_rawDesc)))
+func file_gt_conf_pb_gt_sharding_proto_rawDescGZIP() []byte {
+	file_gt_conf_pb_gt_sharding_proto_rawDescOnce.Do(func() {
+		file_gt_conf_pb_gt_sharding_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_gt_conf_pb_gt_sharding_proto_rawDesc), len(file_gt_conf_pb_gt_sharding_proto_rawDesc)))
 	})
-	return file_tr_conf_pb_tr_sharding_proto_rawDescData
+	return file_gt_conf_pb_gt_sharding_proto_rawDescData
 }
 
-var file_tr_conf_pb_tr_sharding_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_tr_conf_pb_tr_sharding_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
-var file_tr_conf_pb_tr_sharding_proto_goTypes = []any{
-	(ShardingTimeLevel)(0),          // 0: trconfpb.ShardingTimeLevel
-	(*ShardingRootConfig)(nil),      // 1: trconfpb.ShardingRootConfig
-	(*ShardingWithTimeConfig)(nil),  // 2: trconfpb.ShardingWithTimeConfig
-	(*ShardingWithGroupConfig)(nil), // 3: trconfpb.ShardingWithGroupConfig
+var file_gt_conf_pb_gt_sharding_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_gt_conf_pb_gt_sharding_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_gt_conf_pb_gt_sharding_proto_goTypes = []any{
+	(ShardingTimeLevel)(0),          // 0: gtconfpb.ShardingTimeLevel
+	(*ShardingRootConfig)(nil),      // 1: gtconfpb.ShardingRootConfig
+	(*ShardingWithTimeConfig)(nil),  // 2: gtconfpb.ShardingWithTimeConfig
+	(*ShardingWithGroupConfig)(nil), // 3: gtconfpb.ShardingWithGroupConfig
 }
-var file_tr_conf_pb_tr_sharding_proto_depIdxs = []int32{
-	0, // 0: trconfpb.ShardingWithTimeConfig.timeLevel:type_name -> trconfpb.ShardingTimeLevel
+var file_gt_conf_pb_gt_sharding_proto_depIdxs = []int32{
+	0, // 0: gtconfpb.ShardingWithTimeConfig.timeLevel:type_name -> gtconfpb.ShardingTimeLevel
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
@@ -360,27 +360,27 @@ var file_tr_conf_pb_tr_sharding_proto_depIdxs = []int32{
 	0, // [0:1] is the sub-list for field type_name
 }
 
-func init() { file_tr_conf_pb_tr_sharding_proto_init() }
-func file_tr_conf_pb_tr_sharding_proto_init() {
-	if File_tr_conf_pb_tr_sharding_proto != nil {
+func init() { file_gt_conf_pb_gt_sharding_proto_init() }
+func file_gt_conf_pb_gt_sharding_proto_init() {
+	if File_gt_conf_pb_gt_sharding_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_tr_conf_pb_tr_sharding_proto_rawDesc), len(file_tr_conf_pb_tr_sharding_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_gt_conf_pb_gt_sharding_proto_rawDesc), len(file_gt_conf_pb_gt_sharding_proto_rawDesc)),
 			NumEnums:      1,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_tr_conf_pb_tr_sharding_proto_goTypes,
-		DependencyIndexes: file_tr_conf_pb_tr_sharding_proto_depIdxs,
-		EnumInfos:         file_tr_conf_pb_tr_sharding_proto_enumTypes,
-		MessageInfos:      file_tr_conf_pb_tr_sharding_proto_msgTypes,
+		GoTypes:           file_gt_conf_pb_gt_sharding_proto_goTypes,
+		DependencyIndexes: file_gt_conf_pb_gt_sharding_proto_depIdxs,
+		EnumInfos:         file_gt_conf_pb_gt_sharding_proto_enumTypes,
+		MessageInfos:      file_gt_conf_pb_gt_sharding_proto_msgTypes,
 	}.Build()
-	File_tr_conf_pb_tr_sharding_proto = out.File
-	file_tr_conf_pb_tr_sharding_proto_goTypes = nil
-	file_tr_conf_pb_tr_sharding_proto_depIdxs = nil
+	File_gt_conf_pb_gt_sharding_proto = out.File
+	file_gt_conf_pb_gt_sharding_proto_goTypes = nil
+	file_gt_conf_pb_gt_sharding_proto_depIdxs = nil
 }

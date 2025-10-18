@@ -1,4 +1,4 @@
-package trsharding
+package gtsharding
 
 // rootRule 根命名规则
 type rootRule struct {

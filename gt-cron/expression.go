@@ -1,4 +1,4 @@
-package trcron
+package gtcron
 
 import (
 	"fmt"

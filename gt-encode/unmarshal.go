@@ -1,13 +1,13 @@
-package trencode
+package gtencode
 
 import (
 	"fmt"
-	"github.com/DontBeProud/go-treasure/tr-encode/encoding"
-	"github.com/DontBeProud/go-treasure/tr-encode/encoding/form"
-	"github.com/DontBeProud/go-treasure/tr-encode/encoding/json"
-	encodingProto "github.com/DontBeProud/go-treasure/tr-encode/encoding/proto"
-	"github.com/DontBeProud/go-treasure/tr-encode/encoding/xml"
-	"github.com/DontBeProud/go-treasure/tr-encode/encoding/yaml"
+	"github.com/DontBeProud/go-treasure/gt-encode/encoding"
+	"github.com/DontBeProud/go-treasure/gt-encode/encoding/form"
+	"github.com/DontBeProud/go-treasure/gt-encode/encoding/json"
+	encodingProto "github.com/DontBeProud/go-treasure/gt-encode/encoding/proto"
+	"github.com/DontBeProud/go-treasure/gt-encode/encoding/xml"
+	"github.com/DontBeProud/go-treasure/gt-encode/encoding/yaml"
 	"github.com/bytedance/sonic"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"

@@ -1,4 +1,4 @@
-package trsharding
+package gtsharding
 
 ////////////////////
 // 分库分表分字段规则 //

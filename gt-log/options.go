@@ -1,4 +1,4 @@
-package trlog
+package gtlog
 
 import (
 	"time"

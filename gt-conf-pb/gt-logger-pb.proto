@@ -1,0 +1,26 @@
+syntax = "proto3";
+package gtconfpb;
+option go_package = "github.com/DontBeProud/go-treasure/pb/gt-conf-pb;gtconfpb";
+
+import "google/protobuf/duration.proto";
+
+// 日志级别
+enum LogLevel {
+  debug  = 0;
+  info   = 1;
+  warn   = 2;
+  error  = 3;
+  fatal  = 4;
+}
+
+// 日志配置的proto
+message LogConfig {
+  bool                              disableFileWriter = 1;  // 禁用日志文件写入
+  bool                              disableStdOut     = 2;  // 禁用std输出
+  string                            dir               = 3;  // 日志根目录
+  optional google.protobuf.Duration rotationTime      = 4;  // 日志滚动时间（默认为 1 小时）
+  optional google.protobuf.Duration fileAge           = 5;  // 日志保存时间（默认为 180 天）
+  LogLevel                          logLevel          = 6;  // 日志最低输出等级（默认为 debug）
+  repeated string                   constKv           = 7;  // 固定输出的 key-value
+  bool                              disableJsonFmt    = 8;  // 是否禁用 json 格式输出（默认为 false）
+}

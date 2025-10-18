@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	gtconfpb "github.com/DontBeProud/go-treasure/pb/gt-conf-pb"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -96,8 +97,46 @@ var (
 	bufferedFlushInterval = time.Second * 1
 )
 
+func NewLoggerWithPB(config *gtconfpb.LogConfig, options ...Option) (ll Logger, cleanup func(), err error) {
+	opts := []Option{Level(config.LogLevel.String())}
+
+	if config.Dir != "" {
+		opts = append(opts, Path(config.Dir))
+	}
+
+	if !config.DisableFileWriter {
+		opts = append(opts, LogToFile(true))
+	}
+
+	if !config.DisableStdOut {
+		opts = append(opts, LogToStdout(true))
+	}
+
+	if !config.DisableJsonFmt {
+		opts = append(opts, FormatJSON(true))
+	}
+
+	if config.RotationTime != nil {
+		opts = append(opts, RotationTime(config.RotationTime.AsDuration()))
+	}
+
+	if config.FileAge != nil {
+		opts = append(opts, FileAge(config.FileAge.AsDuration()))
+	}
+
+	if config.ConstKv != nil {
+		kvList := make([]interface{}, len(config.ConstKv))
+		for k, v := range config.ConstKv {
+			kvList[k] = v
+		}
+		opts = append(opts, With(kvList...))
+	}
+
+	opts = append(opts, options...)
+	return NewLogger(opts...)
+}
+
 // NewLogger 创建 loggerObj 操作对象，对外只暴露这一个方法，所有操作都通过封装过的 loggerObj 对象来处理
-// logger 封装过的 loggerObj 操作对象；err 创建对象时的异常
 func NewLogger(options ...Option) (ll Logger, cleanup func(), err error) {
 	l := &loggerObj{
 		setGlobal:             true,

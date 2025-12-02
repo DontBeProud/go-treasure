@@ -2,8 +2,9 @@ package gtsharding
 
 import (
 	"fmt"
-	gscron "github.com/DontBeProud/go-treasure/gt-cron"
 	"time"
+
+	gscron "github.com/DontBeProud/go-treasure/gt-cron"
 )
 
 // TimeLevel 基于时间分割的规则等级
@@ -241,7 +242,41 @@ func generateFnModifyRuleWithTime(level TimeLevel, splitCharacter string) (FnStr
 	return rule, nil
 }
 
-// NextTimeNode 推算给定时间节点的下一个时间节点
+// GetTimeNode 获取给定时间节点对应的时间节点
+func (r *shardingRuleWithTime) GetTimeNode(t time.Time) time.Time {
+	switch r.cfg.Level {
+	case TimeLevelDisabled:
+		break
+	case TimeLevelHour:
+		t = time.Date(t.Year(), t.Month(), t.Day(), t.Hour(), 0, 0, 0, t.Location())
+	case TimeLevelHalfDay:
+		t = time.Date(t.Year(), t.Month(), t.Day(), map[bool]int{
+			true:  12,
+			false: 0,
+		}[t.Hour() >= 12], 0, 0, 0, t.Location())
+	case TimeLevelDay:
+		t = time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, t.Location())
+	case TimeLevelWeek:
+		t = t.AddDate(0, 0, 1-int(t.Weekday()))
+	case TimeLevelHalfMonth:
+		t = time.Date(t.Year(), t.Month(), 1+15*((int(t.Day())-1)/15), 0, 0, 0, 0, t.Location())
+	case TimeLevelMonth:
+		t = time.Date(t.Year(), t.Month(), 1, 0, 0, 0, 0, t.Location())
+	case TimeLevelTwoMonth:
+		t = time.Date(t.Year(), time.Month(1+2*((int(t.Month())-1)/2)), 1, 0, 0, 0, 0, t.Location())
+	case TimeLevelQuarter:
+		t = time.Date(t.Year(), time.Month(1+3*((int(t.Month())-1)/3)), 1, 0, 0, 0, 0, t.Location())
+	case TimeLevelHalfYear:
+		t = time.Date(t.Year(), time.Month(1+6*((int(t.Month())-1)/6)), 1, 0, 0, 0, 0, t.Location())
+	case TimeLevelYear:
+		t = time.Date(t.Year(), 1, 1, 0, 0, 0, 0, t.Location())
+	default:
+		break
+	}
+	return t
+}
+
+// NextTimeNode 推算给定时间节点的后N个时间节点
 // round 周期累加轮数
 func (r *shardingRuleWithTime) NextTimeNode(raw time.Time, round uint) time.Time {
 	t := raw
@@ -251,6 +286,60 @@ func (r *shardingRuleWithTime) NextTimeNode(raw time.Time, round uint) time.Time
 	return t
 }
 
+// PreTimeNode 推算给定时间节点的前N个时间节点
+// round 周期累加轮数
+func (r *shardingRuleWithTime) PreTimeNode(raw time.Time, round uint) time.Time {
+	t := raw
+	for i := uint(0); i < round; i++ {
+		t = r.preTimeNode(t)
+	}
+	return t
+}
+
+// preTimeNode 推算给定时间节点的上一个时间节点
+func (r *shardingRuleWithTime) preTimeNode(raw time.Time) time.Time {
+	t := raw
+	switch r.cfg.Level {
+	case TimeLevelDisabled:
+		break
+	case TimeLevelHour:
+		t = t.Add(-1 * time.Hour)
+	case TimeLevelHalfDay:
+		t = t.Add(-12 * time.Hour)
+	case TimeLevelDay:
+		t = t.AddDate(0, 0, -1)
+	case TimeLevelWeek:
+		t = t.AddDate(0, 0, -7)
+	case TimeLevelHalfMonth:
+		if t.Day() > 15 {
+			t = time.Date(t.Year(), t.Month(), 1, 0, 0, 0, 0, t.Location()) // 本月1号
+		} else {
+			t = time.Date(t.Year(), t.Month()-1, 16, 0, 0, 0, 0, t.Location()) // 上月16号
+		}
+	case TimeLevelMonth:
+		t = t.AddDate(0, -1, 0)
+	case TimeLevelTwoMonth:
+		t = t.AddDate(0, -2, 0)
+	case TimeLevelQuarter:
+		if t.Month() <= 3 {
+			t = time.Date(t.Year()-1, 10, 1, 0, 0, 0, 0, t.Location()) // 上年10月
+		} else {
+			t = time.Date(t.Year(), ((t.Month()-4)/3)*3+1, 1, 0, 0, 0, 0, t.Location()) // 上一季度
+		}
+	case TimeLevelHalfYear:
+		if t.Month() > 6 {
+			t = time.Date(t.Year(), 1, 1, 0, 0, 0, 0, t.Location()) // 今年1月
+		} else {
+			t = time.Date(t.Year()-1, 7, 1, 0, 0, 0, 0, t.Location()) // 上年7月
+		}
+	case TimeLevelYear:
+		t = time.Date(t.Year()-1, 1, 1, 0, 0, 0, 0, t.Location())
+	default:
+		break
+	}
+	return r.GetTimeNode(t)
+}
+
 // NextTimeNode 推算给定时间节点的下一个时间节点
 func (r *shardingRuleWithTime) nextTimeNode(raw time.Time) time.Time {
 	t := raw
@@ -258,17 +347,13 @@ func (r *shardingRuleWithTime) nextTimeNode(raw time.Time) time.Time {
 	case TimeLevelDisabled:
 		break
 	case TimeLevelHour:
-		_t := t.Add(1 * time.Hour)
-		t = time.Date(_t.Year(), _t.Month(), _t.Day(), _t.Hour(), 0, 0, 0, t.Location())
+		t = t.Add(1 * time.Hour)
 	case TimeLevelHalfDay:
-		_t := t.Add(12 * time.Hour)
-		t = time.Date(_t.Year(), _t.Month(), _t.Day(), _t.Hour(), 0, 0, 0, t.Location())
+		t = t.Add(12 * time.Hour)
 	case TimeLevelDay:
-		_t := t.AddDate(0, 0, 1)
-		t = time.Date(_t.Year(), _t.Month(), _t.Day(), 0, 0, 0, 0, t.Location())
+		t = t.AddDate(0, 0, 1)
 	case TimeLevelWeek:
-		_t := t.AddDate(0, 0, 7)
-		t = time.Date(_t.Year(), _t.Month(), _t.Day(), 0, 0, 0, 0, t.Location())
+		t = t.AddDate(0, 0, 7)
 	case TimeLevelHalfMonth:
 		if t.Day() > 15 {
 			t = time.Date(t.Year(), t.Month()+1, 1, 0, 0, 0, 0, t.Location()) // 次月1号
@@ -276,20 +361,18 @@ func (r *shardingRuleWithTime) nextTimeNode(raw time.Time) time.Time {
 			t = time.Date(t.Year(), t.Month(), 16, 0, 0, 0, 0, t.Location()) // 当月16号
 		}
 	case TimeLevelMonth:
-		_t := t.AddDate(0, 1, 0)
-		t = time.Date(_t.Year(), _t.Month(), 1, 0, 0, 0, 0, t.Location())
+		t = t.AddDate(0, 1, 0)
 	case TimeLevelTwoMonth:
-		_t := t.AddDate(0, 2, 0)
-		t = time.Date(_t.Year(), _t.Month(), 1, 0, 0, 0, 0, t.Location())
+		t = t.AddDate(0, 2, 0)
 	case TimeLevelQuarter:
 		if t.Month() > 9 {
-			t = time.Date(t.Year()+1, 1, 1, 0, 0, 0, 0, t.Location()) // 次月1月
+			t = time.Date(t.Year()+1, 1, 1, 0, 0, 0, 0, t.Location()) // 次年1月
 		} else {
 			t = time.Date(t.Year(), ((t.Month()-1)/3)*3+4, 1, 0, 0, 0, 0, t.Location()) // 下一季度
 		}
 	case TimeLevelHalfYear:
 		if t.Month() > 6 {
-			t = time.Date(t.Year()+1, 1, 1, 0, 0, 0, 0, t.Location()) // 次月1月
+			t = time.Date(t.Year()+1, 1, 1, 0, 0, 0, 0, t.Location()) // 次年1月
 		} else {
 			t = time.Date(t.Year(), 7, 1, 0, 0, 0, 0, t.Location()) // 本年7月
 		}
@@ -298,7 +381,7 @@ func (r *shardingRuleWithTime) nextTimeNode(raw time.Time) time.Time {
 	default:
 		break
 	}
-	return t
+	return r.GetTimeNode(t)
 }
 
 // ExpandValidTimeNodeList 【返回去重结果】根据传入的时间区间，展开生成有效的时间节点列表，用于后续生成修饰器列表(起始时间会被自动修正为不早于EarliestValidTime的值)

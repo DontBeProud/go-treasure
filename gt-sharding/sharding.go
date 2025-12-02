@@ -1,9 +1,10 @@
 package gtsharding
 
 import (
+	"time"
+
 	gscron "github.com/DontBeProud/go-treasure/gt-cron"
 	trconfpb "github.com/DontBeProud/go-treasure/pb/gt-conf-pb"
-	"time"
 )
 
 // NewRootRule 创建根命名规则
@@ -91,9 +92,14 @@ type MutableSubRule interface {
 
 // TimeNodeQueryInterface 时间节点查询接口
 type TimeNodeQueryInterface interface {
+	// GetTimeNode 获取给定时间节点对应的时间节点
+	GetTimeNode(t time.Time) time.Time
 	// NextTimeNode 推算给定时间节点的下一个时间节点
 	// round 周期累加轮数
 	NextTimeNode(raw time.Time, round uint) time.Time
+	// PreTimeNode 推算给定时间节点的前N个时间节点
+	// round 周期累加轮数
+	PreTimeNode(raw time.Time, round uint) time.Time
 	// ExpandValidTimeNodeList 【返回去重结果】根据传入的时间区间，展开生成有效的时间节点列表，用于后续生成修饰器列表(起始时间会被自动修正为不早于EarliestValidTime的值)
 	ExpandValidTimeNodeList(start *time.Time, end *time.Time) []time.Time
 	// GetDefaultCronExpressionGenerator 根据时间分割规则等级，生成对应的默认计划任务表达式，默认秒和分钟设为0

@@ -78,6 +78,12 @@ func FormatJSON(formatJSON bool) Option {
 	}
 }
 
+func BeautyJson(beautyJson bool) Option {
+	return func(l *loggerObj) {
+		l.beautyJSON = beautyJson
+	}
+}
+
 // CallSkip set callSkip
 func CallSkip(callSkip int) Option {
 	return func(l *loggerObj) {

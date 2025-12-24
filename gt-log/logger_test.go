@@ -103,6 +103,7 @@ func TestLoggerWithJSONFormat(t *testing.T) { //nolint
 		With("key", "value"),
 		// 是否输出 JSON 格式（默认为 true）
 		FormatJSON(true),
+		BeautyJson(true),
 	)
 
 	ctx := context.Background()

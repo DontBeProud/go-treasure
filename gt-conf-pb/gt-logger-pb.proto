@@ -23,4 +23,5 @@ message LogConfig {
   LogLevel                          logLevel          = 6;  // 日志最低输出等级（默认为 debug）
   repeated string                   constKv           = 7;  // 固定输出的 key-value
   bool                              disableJsonFmt    = 8;  // 是否禁用 json 格式输出（默认为 false）
+  bool                              beautyJsonFmt     = 9;  // 是否美化 json 格式输出（默认为 false）
 }

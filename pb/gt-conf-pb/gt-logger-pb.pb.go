@@ -89,6 +89,7 @@ type LogConfig struct {
 	LogLevel          LogLevel               `protobuf:"varint,6,opt,name=logLevel,proto3,enum=gtconfpb.LogLevel" json:"logLevel,omitempty"` // 日志最低输出等级（默认为 debug）
 	ConstKv           []string               `protobuf:"bytes,7,rep,name=constKv,proto3" json:"constKv,omitempty"`                           // 固定输出的 key-value
 	DisableJsonFmt    bool                   `protobuf:"varint,8,opt,name=disableJsonFmt,proto3" json:"disableJsonFmt,omitempty"`            // 是否禁用 json 格式输出（默认为 false）
+	BeautyJsonFmt     bool                   `protobuf:"varint,9,opt,name=beautyJsonFmt,proto3" json:"beautyJsonFmt,omitempty"`              // 是否美化 json 格式输出（默认为 false）
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -179,11 +180,18 @@ func (x *LogConfig) GetDisableJsonFmt() bool {
 	return false
 }
 
+func (x *LogConfig) GetBeautyJsonFmt() bool {
+	if x != nil {
+		return x.BeautyJsonFmt
+	}
+	return false
+}
+
 var File_gt_conf_pb_gt_logger_pb_proto protoreflect.FileDescriptor
 
 const file_gt_conf_pb_gt_logger_pb_proto_rawDesc = "" +
 	"\n" +
-	"\x1dgt-conf-pb/gt-logger-pb.proto\x12\bgtconfpb\x1a\x1egoogle/protobuf/duration.proto\"\xfe\x02\n" +
+	"\x1dgt-conf-pb/gt-logger-pb.proto\x12\bgtconfpb\x1a\x1egoogle/protobuf/duration.proto\"\xa4\x03\n" +
 	"\tLogConfig\x12,\n" +
 	"\x11disableFileWriter\x18\x01 \x01(\bR\x11disableFileWriter\x12$\n" +
 	"\rdisableStdOut\x18\x02 \x01(\bR\rdisableStdOut\x12\x10\n" +
@@ -192,7 +200,8 @@ const file_gt_conf_pb_gt_logger_pb_proto_rawDesc = "" +
 	"\afileAge\x18\x05 \x01(\v2\x19.google.protobuf.DurationH\x01R\afileAge\x88\x01\x01\x12.\n" +
 	"\blogLevel\x18\x06 \x01(\x0e2\x12.gtconfpb.LogLevelR\blogLevel\x12\x18\n" +
 	"\aconstKv\x18\a \x03(\tR\aconstKv\x12&\n" +
-	"\x0edisableJsonFmt\x18\b \x01(\bR\x0edisableJsonFmtB\x0f\n" +
+	"\x0edisableJsonFmt\x18\b \x01(\bR\x0edisableJsonFmt\x12$\n" +
+	"\rbeautyJsonFmt\x18\t \x01(\bR\rbeautyJsonFmtB\x0f\n" +
 	"\r_rotationTimeB\n" +
 	"\n" +
 	"\b_fileAge*?\n" +

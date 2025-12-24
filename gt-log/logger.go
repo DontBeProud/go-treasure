@@ -5,12 +5,13 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	gtconfpb "github.com/DontBeProud/go-treasure/pb/gt-conf-pb"
 	"os"
 	"path/filepath"
 	"reflect"
 	"strings"
 	"time"
+
+	gtconfpb "github.com/DontBeProud/go-treasure/pb/gt-conf-pb"
 
 	"github.com/bytedance/sonic"
 	kLog "github.com/go-kratos/kratos/v2/log"
@@ -69,6 +70,7 @@ type loggerObj struct {
 	level        string        // 日志最低输出等级（默认为 debug）
 	kv           []interface{} // 固定输出的 key-value
 	formatJSON   bool          // 是否输出 JSON 格式（默认为 true）
+	beautyJSON   bool          // JSON 格式是否美化输出（默认为 false）
 	callSkip     int           // 调用者层级
 
 	// Filter
@@ -114,6 +116,10 @@ func NewLoggerWithPB(config *gtconfpb.LogConfig, options ...Option) (ll Logger, 
 
 	if !config.DisableJsonFmt {
 		opts = append(opts, FormatJSON(true))
+	}
+
+	if config.BeautyJsonFmt {
+		opts = append(opts, BeautyJson(true))
 	}
 
 	if config.RotationTime != nil {
@@ -416,13 +422,22 @@ func (l *loggerObj) logf(ctx context.Context, level zapcore.Level, args ...inter
 				buf[cast.ToString(k)] = "null"
 			} else if vv, err = cast.ToStringE(v); err != nil {
 				// 如果是可以转 JSON 的结构体，则尝试转 JSON 字符串
-				vj, _ := sonic.ConfigStd.Marshal(v)
+				var vj []byte
+				if l.beautyJSON {
+					vj, _ = sonic.ConfigStd.MarshalIndent(v, "", "\t")
+				} else {
+					vj, _ = sonic.ConfigStd.Marshal(v)
+				}
 				buf[cast.ToString(k)] = json.RawMessage(vj)
 			} else {
 				buf[cast.ToString(k)] = vv
 			}
 		}
-		text, _ = sonic.ConfigStd.Marshal(buf)
+		if l.beautyJSON {
+			text, _ = sonic.ConfigStd.MarshalIndent(buf, "", "\t")
+		} else {
+			text, _ = sonic.ConfigStd.Marshal(buf)
+		}
 	} else {
 		var buf bytes.Buffer
 		for i := 1; i < len(fkv); i += 2 {

@@ -293,6 +293,10 @@ func (r *shardingRuleWithTime) PreTimeNode(raw time.Time, round uint) time.Time 
 	for i := uint(0); i < round; i++ {
 		t = r.preTimeNode(t)
 	}
+	// 不能早于最早有效时间
+	if t.Before(r.cfg.EarliestValidTime) {
+		t = r.GetTimeNode(r.cfg.EarliestValidTime)
+	}
 	return t
 }
 

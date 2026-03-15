@@ -1,0 +1,43 @@
+syntax = "proto3";
+package gtconfpb;
+option go_package = "github.com/DontBeProud/go-treasure/pb/gt-conf-pb;gtconfpb";
+
+import "google/protobuf/duration.proto";
+
+// nacos 配置
+message NacosConfig {
+  repeated string                   endpoint    = 1;  // 终端地址。例: ["127.0.0.1:8848", "192.168.243.243"], 默认端口8848
+  string                            namespace   = 2;  // 命名空间
+  string                            userName    = 3;  // 用户名
+  string                            password    = 4;  // 密码
+  string                            accessKey   = 5;  // the AccessKey for kms 如果同时配置了 ak/sk 则用户名/密码失效
+  string                            secretKey   = 6;  // the SecretKey for kms 如果同时配置了 ak/sk 则用户名/密码失效
+  optional string                   logDir      = 7;  // 日志目录，默认为 /tmp/nacos/log
+  optional string                   cacheDir    = 8;  // 缓存目录，默认为 /tmp/nacos/cache
+  optional google.protobuf.Duration timeout     = 9;  // 客户端连接超时时间（单位毫秒），默认 10s
+  string                            regionID    = 10; // region ID
+}
+
+// nacos注册中心配置
+message NacosRegistryConfig {
+  string group       = 1; // 分组
+  string prefix      = 2; // 前缀
+  float  weight      = 3; // 权重
+  string cluster     = 4; // 集群名称
+  string kind        = 5; // kind
+}
+
+// nacos数据中心配置
+message NacosConfigCenterConfig {
+  string dataId             = 1;  // 配置文件名称
+  string group              = 2;  // 配置文件分组
+  string tag                = 3;  // 配置文件标签
+  string configTags         = 4;  // 配置文件标签
+  string appName            = 5;  // 应用名称
+  string betaIps            = 6;  // beta ip
+  string casMd5             = 7;  // 配置文件的 MD5 值
+  string type               = 8;  // 配置文件类型
+  string srcUser            = 9;  // 来源用户
+  string encryptedDataKey   = 10; // 加密数据密钥
+  string kmsKeyId           = 11; // KMS 密钥 ID
+}

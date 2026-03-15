@@ -170,8 +170,11 @@ func generateFnModifyRuleWithTime(level TimeLevel, splitCharacter string) (FnStr
 	var indexRule func(t *time.Time) string
 	switch level {
 	case TimeLevelHour:
+		// fix: 原格式 "2006%s01%s02%s15%s04" 包含分钟（04），导致按小时分表时
+		// 表名因分钟不同而产生多余的分表，不同分钟的数据写入不同的表，与按小时
+		// 分表的语义不符。正确格式应只精确到小时（15）。
 		timeRule = func(t *time.Time) string {
-			return t.Format(fmt.Sprintf("2006%s01%s02%s15%s04", splitCharacter, splitCharacter, splitCharacter, splitCharacter))
+			return t.Format(fmt.Sprintf("2006%s01%s02%s15", splitCharacter, splitCharacter, splitCharacter))
 		}
 	case TimeLevelHalfDay:
 		timeRule = func(t *time.Time) string {

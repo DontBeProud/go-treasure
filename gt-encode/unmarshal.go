@@ -2,6 +2,7 @@ package gtencode
 
 import (
 	"fmt"
+
 	"github.com/DontBeProud/go-treasure/gt-encode/encoding"
 	"github.com/DontBeProud/go-treasure/gt-encode/encoding/form"
 	"github.com/DontBeProud/go-treasure/gt-encode/encoding/json"

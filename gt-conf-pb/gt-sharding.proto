@@ -32,8 +32,8 @@ message ShardingWithTimeConfig {
   bool              prefixMode            = 5; // 时间信息是否置于命名前缀(默认位false，即采用raw - date的格式)
 }
 
-// ShardingWithGroupConfig 基于分组的分割规则配置
-message ShardingWithGroupConfig {
+// ShardingRuleWithGroupConfig 基于分组的分割规则配置
+message ShardingRuleWithGroupConfig {
   uint64            groupSize             = 1; // 分组数量(实际使用的过程中，建议使用2的N次方)
   string            splitCharacter        = 2; // 分割字符 raw + SplitCharacter + group
   bool              prefixMode            = 3; // 分组信息是否置于命名前缀(默认位false，即采用raw - group的格式)

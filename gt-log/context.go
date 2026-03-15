@@ -28,9 +28,45 @@ func GetLogContext(ctx context.Context) *LogContext {
 	return fields
 }
 
+func (l *LoggerEx) DebugContext(ctx context.Context, msg string) {
+	l.Logger.DebugWContext(ctx, mergeFields(ctx, defaultMessageKey, msg)...)
+}
+
+func (l *LoggerEx) InfoContext(ctx context.Context, msg string) {
+	l.Logger.InfoWContext(ctx, mergeFields(ctx, defaultMessageKey, msg)...)
+}
+
+func (l *LoggerEx) WarnContext(ctx context.Context, msg string) {
+	l.Logger.WarnWContext(ctx, mergeFields(ctx, defaultMessageKey, msg)...)
+}
+
+func (l *LoggerEx) ErrorContext(ctx context.Context, msg string) {
+	l.Logger.ErrorWContext(ctx, mergeFields(ctx, defaultMessageKey, msg)...)
+}
+
+func (l *LoggerEx) DebugwContext(ctx context.Context, kv ...interface{}) {
+	l.Logger.DebugWContext(ctx, mergeFields(ctx, kv...)...)
+}
+
+func (l *LoggerEx) InfowContext(ctx context.Context, kv ...interface{}) {
+	l.Logger.InfoWContext(ctx, mergeFields(ctx, kv...)...)
+}
+
+func (l *LoggerEx) WarnwContext(ctx context.Context, kv ...interface{}) {
+	l.Logger.WarnWContext(ctx, mergeFields(ctx, kv...)...)
+}
+
+func (l *LoggerEx) ErrorwContext(ctx context.Context, kv ...interface{}) {
+	l.Logger.ErrorWContext(ctx, mergeFields(ctx, kv...)...)
+}
+
+func (l *LoggerEx) LogContext(ctx context.Context, level Lvl, kvs ...interface{}) error {
+	return l.Logger.LogContext(ctx, level, mergeFields(ctx, kvs)...)
+}
+
 type key string
 
-const LogFields key = "TR_LOG_FIELDS"
+const LogFields key = "GS_LOG_FIELDS"
 
 func mergeFields(ctx context.Context, kvs ...interface{}) []interface{} {
 	ctxFields := GetLogContext(ctx)

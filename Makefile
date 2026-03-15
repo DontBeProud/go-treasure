@@ -23,7 +23,6 @@ init:
 .PHONY: build-proto
 build-proto:
 	protoc --proto_path=. \
-	       --proto_path=./third_party \
  	       --go_out=paths=source_relative:pb \
  	       --go-http_out=paths=source_relative:pb \
  	       --go-grpc_out=paths=source_relative:pb \

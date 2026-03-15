@@ -225,8 +225,8 @@ func (x *ShardingWithTimeConfig) GetPrefixMode() bool {
 	return false
 }
 
-// ShardingWithGroupConfig 基于分组的分割规则配置
-type ShardingWithGroupConfig struct {
+// ShardingRuleWithGroupConfig 基于分组的分割规则配置
+type ShardingRuleWithGroupConfig struct {
 	state                 protoimpl.MessageState `protogen:"open.v1"`
 	GroupSize             uint64                 `protobuf:"varint,1,opt,name=groupSize,proto3" json:"groupSize,omitempty"`                         // 分组数量(实际使用的过程中，建议使用2的N次方)
 	SplitCharacter        string                 `protobuf:"bytes,2,opt,name=splitCharacter,proto3" json:"splitCharacter,omitempty"`                // 分割字符 raw + SplitCharacter + group
@@ -236,20 +236,20 @@ type ShardingWithGroupConfig struct {
 	sizeCache             protoimpl.SizeCache
 }
 
-func (x *ShardingWithGroupConfig) Reset() {
-	*x = ShardingWithGroupConfig{}
+func (x *ShardingRuleWithGroupConfig) Reset() {
+	*x = ShardingRuleWithGroupConfig{}
 	mi := &file_gt_conf_pb_gt_sharding_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ShardingWithGroupConfig) String() string {
+func (x *ShardingRuleWithGroupConfig) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ShardingWithGroupConfig) ProtoMessage() {}
+func (*ShardingRuleWithGroupConfig) ProtoMessage() {}
 
-func (x *ShardingWithGroupConfig) ProtoReflect() protoreflect.Message {
+func (x *ShardingRuleWithGroupConfig) ProtoReflect() protoreflect.Message {
 	mi := &file_gt_conf_pb_gt_sharding_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -261,33 +261,33 @@ func (x *ShardingWithGroupConfig) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ShardingWithGroupConfig.ProtoReflect.Descriptor instead.
-func (*ShardingWithGroupConfig) Descriptor() ([]byte, []int) {
+// Deprecated: Use ShardingRuleWithGroupConfig.ProtoReflect.Descriptor instead.
+func (*ShardingRuleWithGroupConfig) Descriptor() ([]byte, []int) {
 	return file_gt_conf_pb_gt_sharding_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *ShardingWithGroupConfig) GetGroupSize() uint64 {
+func (x *ShardingRuleWithGroupConfig) GetGroupSize() uint64 {
 	if x != nil {
 		return x.GroupSize
 	}
 	return 0
 }
 
-func (x *ShardingWithGroupConfig) GetSplitCharacter() string {
+func (x *ShardingRuleWithGroupConfig) GetSplitCharacter() string {
 	if x != nil {
 		return x.SplitCharacter
 	}
 	return ""
 }
 
-func (x *ShardingWithGroupConfig) GetPrefixMode() bool {
+func (x *ShardingRuleWithGroupConfig) GetPrefixMode() bool {
 	if x != nil {
 		return x.PrefixMode
 	}
 	return false
 }
 
-func (x *ShardingWithGroupConfig) GetIndexIncreaseFromZero() bool {
+func (x *ShardingRuleWithGroupConfig) GetIndexIncreaseFromZero() bool {
 	if x != nil {
 		return x.IndexIncreaseFromZero
 	}
@@ -309,8 +309,8 @@ const file_gt_conf_pb_gt_sharding_proto_rawDesc = "" +
 	"\x11earliestValidTime\x18\x04 \x01(\x04R\x11earliestValidTime\x12\x1e\n" +
 	"\n" +
 	"prefixMode\x18\x05 \x01(\bR\n" +
-	"prefixMode\"\xb5\x01\n" +
-	"\x17ShardingWithGroupConfig\x12\x1c\n" +
+	"prefixMode\"\xb9\x01\n" +
+	"\x1bShardingRuleWithGroupConfig\x12\x1c\n" +
 	"\tgroupSize\x18\x01 \x01(\x04R\tgroupSize\x12&\n" +
 	"\x0esplitCharacter\x18\x02 \x01(\tR\x0esplitCharacter\x12\x1e\n" +
 	"\n" +
@@ -346,10 +346,10 @@ func file_gt_conf_pb_gt_sharding_proto_rawDescGZIP() []byte {
 var file_gt_conf_pb_gt_sharding_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_gt_conf_pb_gt_sharding_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_gt_conf_pb_gt_sharding_proto_goTypes = []any{
-	(ShardingTimeLevel)(0),          // 0: gtconfpb.ShardingTimeLevel
-	(*ShardingRootConfig)(nil),      // 1: gtconfpb.ShardingRootConfig
-	(*ShardingWithTimeConfig)(nil),  // 2: gtconfpb.ShardingWithTimeConfig
-	(*ShardingWithGroupConfig)(nil), // 3: gtconfpb.ShardingWithGroupConfig
+	(ShardingTimeLevel)(0),              // 0: gtconfpb.ShardingTimeLevel
+	(*ShardingRootConfig)(nil),          // 1: gtconfpb.ShardingRootConfig
+	(*ShardingWithTimeConfig)(nil),      // 2: gtconfpb.ShardingWithTimeConfig
+	(*ShardingRuleWithGroupConfig)(nil), // 3: gtconfpb.ShardingRuleWithGroupConfig
 }
 var file_gt_conf_pb_gt_sharding_proto_depIdxs = []int32{
 	0, // 0: gtconfpb.ShardingWithTimeConfig.timeLevel:type_name -> gtconfpb.ShardingTimeLevel

@@ -50,7 +50,7 @@ type SubRuleGeneratorInterface interface {
 	// GenerateSubShardingRuleWithGroup 生成基于分组的子分割规则
 	GenerateSubShardingRuleWithGroup(cfg *RuleWithGroupConfig) (SubRuleWithGroup, error)
 	// GenerateSubShardingRuleWithGroupWithPb 生成基于分组的子分割规则(通过pb)
-	GenerateSubShardingRuleWithGroupWithPb(cfg *trconfpb.ShardingWithGroupConfig) (SubRuleWithGroup, error)
+	GenerateSubShardingRuleWithGroupWithPb(cfg *trconfpb.ShardingRuleWithGroupConfig) (SubRuleWithGroup, error)
 }
 
 // SubRule 分割规则(接口)

@@ -111,6 +111,12 @@ func (r *shardingRuleWithGroup) BatchGenerateStringModifiersByGroupIdRange(start
 
 // ExpandValidGroupIdNodeList 根据传入的分组id区间，展开生成有效的分组id节点列表，用于后续生成修饰器列表
 func (r *shardingRuleWithGroup) ExpandValidGroupIdNodeList(start *uint64, end *uint64) []uint64 {
+	// fix: GroupSize==0 时，原先计算 `r.indexIncreaseBase + 0 - 1` 发生 uint64 下溢，
+	// _end 变为 math.MaxUint64，导致 for 循环无限执行直至内存耗尽。
+	// GroupSize==0 表示不启用分组规则，直接返回起始节点即可。
+	if r.cfg.GroupSize == 0 {
+		return []uint64{r.indexIncreaseBase}
+	}
 
 	_start := r.indexIncreaseBase
 	if start != nil && *start > _start {

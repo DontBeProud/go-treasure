@@ -1,0 +1,33 @@
+syntax = "proto3";
+package gtconfpb;
+option go_package = "github.com/DontBeProud/go-treasure/pb/gt-conf-pb;gtconfpb";
+
+import "google/protobuf/duration.proto";
+
+// redis 配置
+message RedisConfig {
+  RedisConnectConfig                        con                 = 1;  // 连接配置
+  string                                    masterName          = 2;  // 哨兵模式的 master name
+  uint32                                    db                  = 3;  // db，默认0
+  bool                                      disableReadOnly     = 4;  // 禁用从节点读
+  bool                                      routeRandomly       = 5;  // 随机路由
+  bool                                      routeByLatency      = 6;  // 根据延迟路由
+  optional google.protobuf.Duration         dialTimeout         = 7;  // 连接超时时间（默认 5 秒）
+  optional google.protobuf.Duration         readTimeout         = 8;  // 读超时时间（默认 3 秒）
+  optional google.protobuf.Duration         writeTimeout        = 9;  // 写超时时间（默认等于读超时时间）
+  optional uint32                           poolSize            = 10; // 最大连接池数（默认 10 * CPU 核数）
+  uint32                                    minIdleCons         = 11; // 最小空闲连接数（默认为 0）
+  optional google.protobuf.Duration         maxConAge           = 12; // 最大过期时间（默认为 0 不过期）
+  optional google.protobuf.Duration         poolTimeout         = 13; // 连接池超时时间（默认读超时时间 +1 秒）
+  optional google.protobuf.Duration         idleTimeout         = 14; // 空闲超时时间（默认 5 分钟，设置 -1 可关闭空闲检查）
+}
+
+// redis 连接配置
+message RedisConnectConfig {
+  string                            addr               = 1;  // addr host:port（默认为 127.0.0.1:6379）
+  repeated string                   clusterAddr        = 2;  // clusterAddr host:port
+  string                            userName           = 3;  // 用户名
+  string                            password           = 4;  // 密码
+  string                            sentinelUserName   = 5;  // 哨兵用户名
+  string                            sentinelPassword   = 6;  // 哨兵密码
+}

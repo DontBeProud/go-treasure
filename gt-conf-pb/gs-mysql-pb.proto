@@ -1,0 +1,36 @@
+syntax = "proto3";
+package gtconfpb;
+option go_package = "github.com/DontBeProud/go-treasure/pb/gt-conf-pb;gtconfpb";
+
+import "google/protobuf/duration.proto";
+
+// mysql配置
+message MysqlConfig {
+  MysqlConnectConfig                        con           = 1; // mysql连接配置
+  optional uint32                           maxOpenCon    = 2; // 最大数据库连接数（默认 10 * CPU 核数）
+  optional uint32                           maxIdleCon    = 3; // 最大数据库等待连接数（默认为 2）
+  optional google.protobuf.Duration         maxIdleTime   = 4; // 最大连接池等待时间（默认为 0，取决于连接空闲时间）
+  optional google.protobuf.Duration         maxLifeTime   = 5; // 最大连接池生命周期（默认为 0，取决于连接过期时间）
+  optional google.protobuf.Duration         pingTimeout   = 6; // ping超时时间（默认 1 秒）
+}
+
+// mysql 连接配置
+message MysqlConnectConfig {
+  string              dsn               = 1;  // dsn, 格式为 [username[:password]@][protocol[(address)]]/dbname[?param1=value1&...&paramN=valueN], 若非空则其余字段失效
+  string              ip                = 2;  // IP，必填
+  uint32              port              = 3;  // 端口，必填
+  string              userName          = 4;  // 用户名，必填
+  string              password          = 5;  // 密码，必填
+  string              dbName            = 6;  // 库名，必填
+  optional string     network           = 7;  // 网络协议类型, tcp/udp, 不填默认tcp
+  optional string     charset           = 8;  // 字符集。不填默认utf8mb4
+  bool                dontParseTime     = 9;  // 不数据库时间转换成golang.Time.Time。默认false。
+  optional string     location          = 10; // 解析时间类型时的时区(不影响实际存储的数据时区), 不填默认UTC。中国地区: Asia%2FShanghai
+  map<string, string> options           = 11; // 其他连接参数
+}
+
+// mysql表结构定制化配置
+message MysqlTableFieldCustomizedConfig {
+  repeated string fields      = 1;  // 定制化字段(无需附带逗号) etc: "`cv_tag` BIGINT(20) UNSIGNED AS (json_unquote(json_extract(`du_device_core_info`,_utf8mb4\'$.CvTag\'))) stored"
+  repeated string indexes     = 2;  // 定制化索引(无需附带逗号) etc: "INDEX `idx_cv_tag` (`cv_tag`) USING BTREE"
+}

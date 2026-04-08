@@ -4,12 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"runtime"
+	"strconv"
+	"strings"
 	"time"
 
 	gtlog "github.com/DontBeProud/go-treasure/gt-log"
 	mysqlDriver "github.com/go-sql-driver/mysql"
 	"gorm.io/gorm/logger"
-	"gorm.io/gorm/utils"
 )
 
 // LoggerConfig gorm日志配置
@@ -50,21 +52,21 @@ func (l *gormLogger) LogMode(level logger.LogLevel) logger.Interface {
 // Info print info
 func (l *gormLogger) Info(_ context.Context, msg string, data ...interface{}) {
 	if l.LogLevel >= logger.Info {
-		l.loggerCore.Info(fmt.Sprintf(msg, append([]interface{}{utils.FileWithLineNum()}, data...)...))
+		l.loggerCore.Info(fmt.Sprintf(msg, append([]interface{}{fileWithLineNum()}, data...)...))
 	}
 }
 
 // Warn print warn messages
 func (l *gormLogger) Warn(_ context.Context, msg string, data ...interface{}) {
 	if l.LogLevel >= logger.Warn {
-		l.loggerCore.Warn(fmt.Sprintf(msg, append([]interface{}{utils.FileWithLineNum()}, data...)...))
+		l.loggerCore.Warn(fmt.Sprintf(msg, append([]interface{}{fileWithLineNum()}, data...)...))
 	}
 }
 
 // Error print error messages
 func (l *gormLogger) Error(_ context.Context, msg string, data ...interface{}) {
 	if l.LogLevel >= logger.Error {
-		l.loggerCore.Error(fmt.Sprintf(msg, append([]interface{}{utils.FileWithLineNum()}, data...)...))
+		l.loggerCore.Error(fmt.Sprintf(msg, append([]interface{}{fileWithLineNum()}, data...)...))
 	}
 }
 
@@ -78,7 +80,7 @@ func (l *gormLogger) Trace(_ context.Context, begin time.Time, fc func() (string
 	sql, rows := fc()
 	params := []interface{}{
 		"msg", "mysql trace",
-		"invoker_path", utils.FileWithLineNum(),
+		"invoker_path", fileWithLineNum(),
 		"sql", sql,
 		"latency", float64(elapsed.Nanoseconds()) / 1e6,
 	}
@@ -116,4 +118,23 @@ func IsErrorDuplicateKey(err error) bool {
 		return false
 	}
 	return fmt.Sprintf("%s", _err.SQLState) == "23000"
+}
+
+// fileWithLineNum 返回调用方的文件路径和行号，跳过 gorm.io/gorm 和 go-treasure/gt-mysql 的内部帧。
+func fileWithLineNum() string {
+	pcs := make([]uintptr, 20)
+	n := runtime.Callers(2, pcs)
+	frames := runtime.CallersFrames(pcs[:n])
+	for {
+		frame, more := frames.Next()
+		if !strings.Contains(frame.File, "gorm.io/gorm") &&
+			!strings.Contains(frame.File, "go-treasure/gt-mysql") &&
+			!strings.Contains(frame.File, ".gen.") {
+			return frame.File + ":" + strconv.Itoa(frame.Line)
+		}
+		if !more {
+			break
+		}
+	}
+	return ""
 }
